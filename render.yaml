@@ -1,34 +1,26 @@
 services:
-  - type: web
-    name: career-forge-backend
+- type: web
+  name: career-forge-backend
     plan: free
-    env: node
-    rootDir: Backend
-    buildCommand: npm install
-    startCommand: node server.js
-    envVars:
-      - key: MONGO_URI
-        sync: false
-      - key: JWT_SECRET
-        sync: false
-      - key: GROQ_API_KEY
-        sync: false
-      # We will set FRONTEND_URL below to match the frontend service
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: career-forge-frontend
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: career-forge-frontend
-    env: static
-    rootDir: Frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: career-forge-backend
-          envVarKey: RENDER_EXTERNAL_URL
+      env: node
+        rootDir: Backend
+          buildCommand: npm install
+            startCommand: node server.js
+              envVars:
+                - key: MONGO_URI
+                    sync: false
+                      - key: JWT_SECRET
+                          sync: false
+                            - key: GROQ_API_KEY
+                                sync: false
+                                  - key: FRONTEND_URL
+                                      fromService:
+                                            type: static
+                                                  name: career-forge-frontend
+                                                        envVarKey: RENDER_EXTERNAL_URL
+                                                        - type: static
+                                                          name: career-forge-frontend
+                                                            env: static
+                                                              rootDir: Frontend
+                                                                buildCommand: npm install && npm run build
+                                                                  staticPublishDir: dist
