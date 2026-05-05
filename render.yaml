@@ -1,6 +1,7 @@
 services:
   - type: web
     name: career-forge-backend
+    plan: free
     env: node
     rootDir: Backend
     buildCommand: npm install
