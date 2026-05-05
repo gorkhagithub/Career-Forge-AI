@@ -14,13 +14,4 @@ services:
                             - key: GROQ_API_KEY
                                 sync: false
                                   - key: FRONTEND_URL
-                                      fromService:
-                                            type: static
-                                                  name: career-forge-frontend
-                                                        envVarKey: RENDER_EXTERNAL_URL
-                                                        - type: static
-                                                          name: career-forge-frontend
-                                                            env: static
-                                                              rootDir: Frontend
-                                                                buildCommand: npm install && npm run build
-                                                                  staticPublishDir: dist
+                                      sync: false
