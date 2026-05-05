@@ -1,0 +1,23 @@
+// // 4 layer Archicture 
+
+// // UI :- UI Part Handle The User Show And Handel The User  Navigation  Parrt
+
+// // => Component
+// // => Pages
+
+// // Hooks
+             // For Managing satate And Api layers 
+// // =>hooks
+
+// State   :- Thsi Layer USER data Those Are see in frontend Part That Data Any type Store It  Like User Name And User Email Adress And User How Many Job Decraption Provided Those All Things 
+// That Data State Are Manage That Is Called The State Layer 
+// For Used data Store In Frontend User Data Store By Using State Layer 
+// => auth.context.jsx
+// =>ai.context.jsx
+
+// API  :-  Thsi API Layer Work Is How Our Frontend Is Work And How Frontend Connect The Backend 
+// Thsi Are Used For Communaaication With Backend
+
+// => services
+// auth.api.js
+
