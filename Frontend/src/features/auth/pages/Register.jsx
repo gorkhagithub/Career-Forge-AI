@@ -32,7 +32,12 @@ const Register = () => {
     }
 
     if(loading){
-        return (<main><h1>Loading.......</h1></main>)
+        return (<main className="loading-screen" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center', padding: '20px'}}>
+            <div>
+                <h2>Waking up the server...</h2>
+                <p style={{color: '#888', marginTop: '10px'}}>This may take up to 60 seconds on the first load.</p>
+            </div>
+        </main>)
     }
 
     return (
