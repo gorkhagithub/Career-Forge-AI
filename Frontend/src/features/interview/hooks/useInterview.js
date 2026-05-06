@@ -63,19 +63,47 @@ export const useInterview = () => {
 
     const getResumePdf = async (interviewReportId) => {
         setLoading(true)
+        
+        // Open the window SYNCHRONOUSLY before the await to bypass popup blockers!
+        const printWindow = window.open("", "_blank")
+        if (printWindow) {
+            printWindow.document.write(`
+                <div style="font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
+                    <h2>Generating your custom ATS Resume...</h2>
+                    <p style="color: #666;">This may take 15-20 seconds. Please wait.</p>
+                </div>
+            `)
+        } else {
+            alert("Please allow pop-ups for this website to generate your resume.")
+        }
+
         try {
             const response = await generateResumePdf({ interviewReportId })
-            // Open resume HTML in a new window and trigger print (user can "Save as PDF")
-            const printWindow = window.open("", "_blank")
+            
             if (printWindow) {
+                printWindow.document.open()
                 printWindow.document.write(response.html)
                 printWindow.document.close()
                 printWindow.focus()
-                printWindow.onload = () => printWindow.print()
+                
+                // Delay slightly to ensure fonts and styles render before triggering print
+                setTimeout(() => {
+                    printWindow.print()
+                }, 1000)
             }
             return { success: true, message: "Resume opened for download" }
         } catch (error) {
             console.error("Generate PDF Error:", error.message)
+            if (printWindow) {
+                printWindow.document.open()
+                printWindow.document.write(`
+                    <div style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+                        <h2 style="color: #ff4d4d;">Failed to generate resume.</h2>
+                        <p>${error.message || "Please try again."}</p>
+                    </div>
+                `)
+                printWindow.document.close()
+            }
             return { success: false, message: error.message || "Failed to generate PDF" }
         } finally {
             setLoading(false)
