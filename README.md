@@ -3,6 +3,11 @@
   
   <h1>Career-Forge-AI 🚀</h1>
   <p><strong>Your Ultimate AI-Powered Interview Preparation Platform</strong></p>
+
+  <h3>
+    🌐 <a href="https://career-forge-frontend-lyart.vercel.app">Live Demo</a> | 
+    ⚙️ <a href="https://career-forge-backend-ai.onrender.com">Backend API</a>
+  </h3>
 </div>
 
 <br />
