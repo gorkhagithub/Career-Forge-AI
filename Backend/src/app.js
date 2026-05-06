@@ -57,6 +57,10 @@ const interviewRouter = require("./routes/interview.routes")
 
 
 /* using all the routes here */
+app.get("/", (req, res) => {
+    res.json({ message: "🚀 Career-Forge-AI API is running successfully!" })
+})
+
 app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
 
