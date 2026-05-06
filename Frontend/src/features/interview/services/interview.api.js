@@ -66,9 +66,7 @@ export const getAllInterviewReports = async () => {
  */
 export const generateResumePdf = async ({ interviewReportId }) => {
     try {
-        const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, null, {
-            responseType: "blob"
-        })
+        const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`)
         return response.data
     } catch (err) {
         console.error("Generate PDF Error:", err.response?.data?.message || err.message)

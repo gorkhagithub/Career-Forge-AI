@@ -65,14 +65,15 @@ export const useInterview = () => {
         setLoading(true)
         try {
             const response = await generateResumePdf({ interviewReportId })
-            const url = window.URL.createObjectURL(new Blob([ response ], { type: "application/pdf" }))
-            const link = document.createElement("a")
-            link.href = url
-            link.setAttribute("download", `resume_${interviewReportId}.pdf`)
-            document.body.appendChild(link)
-            link.click()
-            link.parentNode.removeChild(link)
-            return { success: true, message: "PDF downloaded successfully" }
+            // Open resume HTML in a new window and trigger print (user can "Save as PDF")
+            const printWindow = window.open("", "_blank")
+            if (printWindow) {
+                printWindow.document.write(response.html)
+                printWindow.document.close()
+                printWindow.focus()
+                printWindow.onload = () => printWindow.print()
+            }
+            return { success: true, message: "Resume opened for download" }
         } catch (error) {
             console.error("Generate PDF Error:", error.message)
             return { success: false, message: error.message || "Failed to generate PDF" }

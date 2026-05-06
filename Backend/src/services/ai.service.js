@@ -76,20 +76,20 @@ FORMAT:
     return parsed;
 }
 
-async function generatePdfFromHtml(htmlContent) {
-    // Note: Puppeteer implementation would go here
-    // For now, returning a placeholder
-    return Buffer.from("PDF Generation Placeholder");
-}
-
 async function generateResumePdf({ resume, selfDescription, jobDescription }) {
-    const systemPrompt = `You are a resume generator. Return ONLY valid JSON with a single field "html" containing the HTML of the resume.
+    const systemPrompt = `You are a professional resume writer. Return ONLY valid JSON with a single field "html" containing a complete, self-contained HTML document for an ATS-friendly resume.
 
-The HTML should be well-formatted, professional, ATS-friendly, and 1-2 pages long.
+IMPORTANT RULES:
+- The HTML must include inline CSS styles (no external stylesheets)
+- Use a clean, professional layout with proper spacing
+- Include sections: Contact Info, Summary, Skills, Experience, Education
+- Use the resume content and job description to tailor the resume
+- Make it print-friendly (A4 size, proper margins)
+- Use a modern, readable font stack
 
 FORMAT:
 {
-  "html": "<html>...</html>"
+  "html": "<!DOCTYPE html><html>...</html>"
 }`;
 
     const userPrompt = `Resume: ${resume}\nSelf Description: ${selfDescription}\nJob Description: ${jobDescription}`;
@@ -104,10 +104,21 @@ FORMAT:
     });
 
     const responseText = response.choices[0]?.message?.content || "";
-    const jsonContent = JSON.parse(responseText);
-    const pdfBuffer = await generatePdfFromHtml(jsonContent.html);
+    let jsonContent;
+    try {
+        jsonContent = JSON.parse(responseText);
+    } catch (error) {
+        const match = responseText.match(/\{[\s\S]*\}/);
+        if (match) {
+            jsonContent = JSON.parse(match[0]);
+        } else {
+            throw new Error("Invalid AI response format for resume PDF");
+        }
+    }
 
-    return pdfBuffer;
+    // Return the HTML string directly — the frontend will handle PDF creation
+    return jsonContent.html;
 }
 
 module.exports = { generateInterviewReport, generateResumePdf };
+
